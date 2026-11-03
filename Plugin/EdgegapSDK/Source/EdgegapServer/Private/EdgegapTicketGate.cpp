@@ -62,11 +62,31 @@ TArray<FString> UEdgegapTicketGate::GetAllowedTickets() const { return Allowed.A
 
 FString UEdgegapTicketGate::GetPlayerTicket(const APlayerController* Player) const
 {
-	for (const TPair<FString, TWeakObjectPtr<APlayerController>>& Pair : InUse)
+	const UNetConnection* Connection = Player ? Player->GetNetConnection() : nullptr;
+	if (!Connection) { return FString(); }
+	for (const TPair<FString, TWeakObjectPtr<UNetConnection>>& Pair : InUse)
 	{
-		if (Pair.Value.Get() == Player) { return Pair.Key; }
+		if (Pair.Value.Get() == Connection) { return Pair.Key; }
 	}
 	return FString();
+}
+
+bool UEdgegapTicketGate::IsOpen(const TWeakObjectPtr<UNetConnection>& Connection)
+{
+	return Connection.IsValid() && Connection->GetConnectionState() != USOCK_Closed;
+}
+
+void UEdgegapTicketGate::HoldTicket(const FString& TicketId, UNetConnection* Connection)
+{
+	InUse.Add(TicketId, Connection);
+}
+
+void UEdgegapTicketGate::ReleaseTickets(const UNetConnection* Closing)
+{
+	for (auto It = InUse.CreateIterator(); It; ++It)
+	{
+		if (It->Value.Get() == Closing || !IsOpen(It->Value)) { It.RemoveCurrent(); }
+	}
 }
 
 bool UEdgegapTicketGate::CheckJoin(const FString& Options, const FString& Address, FString& TicketId, FString& OutError)
@@ -83,9 +103,9 @@ bool UEdgegapTicketGate::CheckJoin(const FString& Options, const FString& Addres
 	{
 		Reason = TEXT("ticket not assigned to this server");
 	}
-	else if (const TWeakObjectPtr<APlayerController>* Holder = InUse.Find(TicketId))
+	else if (const TWeakObjectPtr<UNetConnection>* Holder = InUse.Find(TicketId))
 	{
-		if (Holder->IsValid()) { Reason = TEXT("ticket already in use"); }
+		if (IsOpen(*Holder)) { Reason = TEXT("ticket already in use"); }
 	}
 	if (Reason.IsEmpty()) { return true; }
 
@@ -123,15 +143,19 @@ void UEdgegapTicketGate::HandlePostLogin(AGameModeBase* GameMode, APlayerControl
 	}
 	if (!TicketId.IsEmpty())
 	{
-		InUse.Add(TicketId, Player);
+		HoldTicket(TicketId, Connection);
 		UE_LOG(LogEdgegap, Log, TEXT("Player joined with ticket %s."), *TicketId);
 	}
 }
 
 void UEdgegapTicketGate::HandleLogout(AGameModeBase* GameMode, AController* Exiting)
 {
-	for (auto It = InUse.CreateIterator(); It; ++It)
-	{
-		if (!It->Value.IsValid() || It->Value.Get() == Exiting) { It.RemoveCurrent(); }
-	}
+	if (GameMode && GameMode->GetGameInstance() != GetGameInstance()) { return; }
+	// A disconnecting player's connection is already closed here (the sweep frees its ticket) and
+	// its controller no longer points to it. A controller the game replaced (SwapPlayerControllers)
+	// still points to its player's open connection, so release by connection only when that
+	// connection's current controller is the one leaving (a kick, for example).
+	const APlayerController* Player = Cast<APlayerController>(Exiting);
+	const UNetConnection* Connection = Player ? Player->GetNetConnection() : nullptr;
+	ReleaseTickets(Connection && Connection->PlayerController == Player ? Connection : nullptr);
 }

@@ -10,6 +10,7 @@
 class AController;
 class AGameModeBase;
 class APlayerController;
+class UNetConnection;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEdgegapOnJoinRejected, const FString&, Address, const FString&, TicketId, const FString&, Reason);
 
@@ -19,7 +20,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEdgegapOnJoinRejected, const FSt
  * Clients join with "?edgegap_mm_ticket_id=<their ticket>" on the travel URL (the Edgegap client
  * module adds it). The server accepts a ticket only if the matchmaker assigned it to this server
  * (MM_TICKET_IDS, plus tickets added later with AllowTicket, e.g. from backfill), and only for one
- * connection at a time.
+ * connection at a time: a ticket stays in use while the connection that joined with it is open,
+ * even if the game replaces that player's controller.
  *
  * Works with any GameMode: players with a bad ticket are kicked right after login. Use
  * AEdgegapGameMode / AEdgegapGameModeBase (or call CheckJoin from your PreLogin) to refuse them
@@ -80,9 +82,16 @@ public:
 private:
 	void HandlePostLogin(AGameModeBase* GameMode, APlayerController* Player);
 	void HandleLogout(AGameModeBase* GameMode, AController* Exiting);
+	void HoldTicket(const FString& TicketId, UNetConnection* Connection);
+	/** Frees the tickets of Closing and of every connection that has closed since. */
+	void ReleaseTickets(const UNetConnection* Closing);
+	static bool IsOpen(const TWeakObjectPtr<UNetConnection>& Connection);
+
+	friend class FEdgegapTicketGateInUseTest;
 
 	TSet<FString> Allowed;
-	TMap<FString, TWeakObjectPtr<APlayerController>> InUse;
+	/** Ticket -> the connection that joined with it (not its controller, which games may replace). */
+	TMap<FString, TWeakObjectPtr<UNetConnection>> InUse;
 	bool bEnforce = false;
 	FDelegateHandle PostLoginHandle;
 	FDelegateHandle LogoutHandle;

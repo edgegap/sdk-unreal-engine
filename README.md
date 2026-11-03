@@ -8,7 +8,7 @@ Matchmaking and dedicated servers on [Edgegap](https://edgegap.com) for Unreal E
 - **Editor:** a `Tools > Edgegap` panel that builds the Linux server, pushes it, registers the version and starts a test deployment. The same actions run headless for CI.
 
 > [!NOTE]
-> This SDK is in beta (0.1.0). Its API can still change between versions.
+> This SDK is in beta (0.1.1). Its API can still change between versions.
 
 The matchmaker and API code is **generated** from each service's own OpenAPI description, so your matchmaker's profiles become typed Blueprint nodes and structs. For example, the profile `casual` gives `Find Match (casual)`. Regenerate it whenever your matchmaker configuration changes; see [Generator](docs/generator.md).
 

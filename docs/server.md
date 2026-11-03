@@ -10,7 +10,7 @@ When a matchmaker starts your server, Edgegap tells the server which tickets wer
 - that ticket was assigned to **this** server (the match is exact, not a prefix), and
 - no other connected player is using that ticket.
 
-When a player leaves, their ticket is free again, so a player who lost connection can rejoin with the same ticket.
+A ticket is held by the network connection that joined with it, not by the player controller, so it stays in use if your game replaces that player's controller (as Lyra does). When that connection closes, the ticket is free again, so a player who lost connection can rejoin with the same ticket.
 
 Refused joins give one of these reasons:
 

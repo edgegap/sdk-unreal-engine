@@ -6,10 +6,10 @@ The SDK supports **Unreal Engine 5.0 to 5.8**. UE 5.0 is the floor because it is
 
 | Version | Compiled | Automation tests | Live on Edgegap |
 | --- | --- | --- | --- |
-| 5.8 | Win64 (MSVC) and Linux (clang, editor and server targets) | 6/6 pass | Matchmaking, ticket check, build/push/deploy |
-| 5.5.4 | Linux (clang, editor target) | 6/6 pass | |
-| 5.3.2 | Linux (clang, editor target) | 6/6 pass | |
-| 5.0.3 | Linux (clang, editor target) | 6/6 pass | |
+| 5.8 | Win64 (MSVC) and Linux (clang, editor and server targets) | 7/7 pass (0.1.1, Win64) | Matchmaking, ticket check, build/push/deploy |
+| 5.5.4 | Linux (clang, editor target) | 6/6 pass (0.1.0) | |
+| 5.3.2 | Linux (clang, editor target) | 6/6 pass (0.1.0) | |
+| 5.0.3 | Linux (clang, editor target) | 6/6 pass (0.1.0) | |
 | 5.1, 5.2, 5.4, 5.6, 5.7 | Engine API check only (see below) | | |
 
 The editor target compiles all four modules. The live test on UE 5.8 checked that:
