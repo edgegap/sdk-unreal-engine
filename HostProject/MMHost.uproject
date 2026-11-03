@@ -1,0 +1,6 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.8",
+	"Modules": [ { "Name": "MMHost", "Type": "Runtime", "LoadingPhase": "Default" } ],
+	"Plugins": [ { "Name": "EdgegapSDK", "Enabled": true } ]
+}

@@ -1,0 +1,17 @@
+# Unreal build output
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+*.sln
+*.code-workspace
+.vs/
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local compile logs from tools/compile-on-ue.sh
+compat-logs/

@@ -1,0 +1,36 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1.0",
+	"FriendlyName": "Edgegap SDK",
+	"Description": "Edgegap for Unreal Engine 5.0+: matchmaker client, dedicated server helpers and ticket check, the Edgegap API, and an editor panel to build, push and deploy. API layers are generated from the services' OpenAPI specs.",
+	"Category": "Networking",
+	"CreatedBy": "Edgegap",
+	"CreatedByURL": "https://edgegap.com",
+	"DocsURL": "https://github.com/edgegap/sdk-unreal-engine#readme",
+	"SupportURL": "https://github.com/edgegap/sdk-unreal-engine/issues",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"Modules": [
+		{
+			"Name": "EdgegapSDK",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EdgegapClient",
+			"Type": "ClientOnly",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EdgegapServer",
+			"Type": "ServerOnly",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EdgegapSDKEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
+		}
+	]
+}
