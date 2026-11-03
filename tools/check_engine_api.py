@@ -48,6 +48,8 @@ CHECKS = [
     ("UToolMenus::UnRegisterStartupCallback(FDelegateHandle)", "Engine/Source/Developer/ToolMenus/Public/ToolMenus.h", r"UnRegisterStartupCallback\s*\(\s*FDelegateHandle"),
     ("UToolMenu::FindSection / AddSection(name, label)", "Engine/Source/Developer/ToolMenus/Public/ToolMenu.h", r"FToolMenuSection&\s+AddSection\s*\(\s*const\s+FName\s+\w+\s*,\s*const\s+TAttribute[\s\S]*FToolMenuSection\*\s+FindSection\s*\(|FToolMenuSection\*\s+FindSection\s*\([\s\S]*FToolMenuSection&\s+AddSection\s*\(\s*const\s+FName\s+\w+\s*,\s*const\s+TAttribute"),
     ("Policies/CondensedJsonPrintPolicy.h", R + "Json/Public/Policies/CondensedJsonPrintPolicy.h", r"TCondensedJsonPrintPolicy"),
+    ("UNetConnection::GetConnectionState / SetConnectionState", R + "Engine/Classes/Engine/NetConnection.h", r"GetConnectionState\s*\(\s*\)[\s\S]*SetConnectionState\s*\("),
+    ("UPlayer::PlayerController", R + "Engine/Classes/Engine/Player.h", r"APlayerController\s*>?\s*\*?\s*PlayerController\s*;"),
     ("FDetailsViewArgs::HideNameArea", "Engine/Source/Editor/PropertyEditor/Public/PropertyEditorDelegates.h|Engine/Source/Editor/PropertyEditor/Public/IDetailsView.h|Engine/Source/Editor/PropertyEditor/Public/DetailsViewArgs.h", r"HideNameArea"),
 ]
 

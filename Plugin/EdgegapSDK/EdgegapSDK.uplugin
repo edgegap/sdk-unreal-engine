@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "0.1.0",
+	"Version": 2,
+	"VersionName": "0.1.1",
 	"FriendlyName": "Edgegap SDK",
 	"Description": "Edgegap for Unreal Engine 5.0+: matchmaker client, dedicated server helpers and ticket check, the Edgegap API, and an editor panel to build, push and deploy. API layers are generated from the services' OpenAPI specs.",
 	"Category": "Networking",
